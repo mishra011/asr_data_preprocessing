@@ -1,0 +1,2 @@
+librosa
+num2word
