@@ -5,20 +5,22 @@ import json
 import random
 import librosa
 
+#/dacx/CompressedAudioTransfer_upto_26jan
+base_dir = "CompressedAudioTransfer_upto_26jan"
 
-base_dir = "CompressedAudioTransfer"
-
-current_dir = abspath(getcwd())
+#current_dir = abspath(getcwd())
+current_dir = "/dacx"
 print(current_dir)
 
 
-sub_dir_list = listdir("./"+ base_dir)
+sub_dir_list = listdir(join(current_dir, base_dir))
 
 print(sub_dir_list)
 print()
 
 ##########################################
 def read_transcript_to_dict(filename):
+    #print(filename)
     rr = open(filename, "r")
     data = rr.read()
     data = json.loads(data)
@@ -56,11 +58,12 @@ def splitter(data):
             new_data.append(item)
     l = len(new_data)
     print("TOTAL DATA :: ", l)
-    new_data = random.sample(new_data, len(new_data))
-    m = [int((l*60)/100), int((l*20)/100)]
+    #new_data = random.sample(new_data, len(new_data))
+    m = [int((l*80)/100), int((l*10)/100)]
     train = new_data[:m[0]]
     valid = new_data[m[0]:m[0]+m[1]]
     test = new_data[m[0]+m[1]:]
+    print(len(train), len(valid), len(test), l)
 
     return (train, valid, test)
 
@@ -87,7 +90,7 @@ language_based_data = split_on_language(transcript_file_list=transcript_file_lis
 languages = list(language_based_data.keys())
 print(languages)
 
-DIR = "FULL"
+DIR = "Full_Data_v4"
 parts = ["train", "valid", "test"]
 
 
@@ -101,7 +104,7 @@ for lang in languages:
     for i, _data in enumerate(data):
         label = parts[i]
         destination_dir = join(current_dir, DIR, lang, label)
-
+        date_counter = {}
         if not os.path.exists(destination_dir):
             os.makedirs(destination_dir)
         
@@ -111,7 +114,7 @@ for lang in languages:
             date = ff[-2]
             _fname = fname.replace(".txt", "")
             cc = "{0}__{1}".format(label, lang)
-            date_counter = {}
+            #date_counter = {}
             
 
             duration = librosa.get_duration(filename=filepath.replace(".txt", ".wav"))
@@ -122,7 +125,7 @@ for lang in languages:
             else:
                 date_counter[cc] += 1
 
-            name = label + "__"+ lang + "__" + str(duration) + "__" + str(date_counter[cc]).zfill(4) + "__8k" 
+            name = label + "__"+ lang + "__" + str(duration) + "__" + str(date_counter[cc]).zfill(6) + "__8k" 
 
             os.system("cp {0} {1}".format(filepath, join(destination_dir, name+".txt")))
             os.system("cp {0} {1}".format(filepath, join(destination_dir, name+".gl")))

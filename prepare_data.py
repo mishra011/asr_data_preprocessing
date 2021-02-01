@@ -6,15 +6,15 @@ import random
 from num2word import replaceInt
 import string
 import re
+import soundfile
 
+base_dir = "Full_Data_v4"
 
-base_dir = "FULL"
-
-current_dir = abspath(getcwd())
+current_dir = "/dacx/ASR_DATA_PREP"
 print(current_dir)
 
 
-sub_dir_list = listdir("./"+ base_dir)
+sub_dir_list = listdir(join(current_dir, base_dir))
 #sub_dir_list = ['en-in']
 
 print(sub_dir_list)
@@ -63,7 +63,7 @@ def split_on_language(transcript_file_list=[], language_based_data={}):
 
 labels = ["train", "valid", "test"]   #[:1]
 exclude = set(string.punctuation)
-DIR = "dataset"
+DIR = "Preprocess_Data_v4"
 
 tsv_file_name = ""
 
@@ -82,6 +82,7 @@ for lang in sub_dir_list:
         tsv_file = open(join(destination_dir, "{0}.tsv".format(label)), "w")
         ltr_file = open(join(destination_dir, "{0}.ltr".format(label)), "w")
         wrd_file = open(join(destination_dir, "{0}.wrd".format(label)), "w")
+        tsv_file.write(destination_dir + "\n")
         for m in _meta:
             fname = m.replace(".txt", "")
             transcript = read_transcript_to_dict(join(working_dir, m))['alternatives'][0]['transcript']
@@ -105,9 +106,10 @@ for lang in sub_dir_list:
                 cmd = "sox {0} -r 16000 {1}".format(current_wav_file_name, new_wav_file_name)
                 os.system(cmd)
 
+                frames = soundfile.info(new_wav_file_name).frames
 
                 #os.system("cp {0} {1}".format(join(working_dir, fname+ ".wav"), join(destination_dir, fname+".wav")))
-                tsv_file.write(new_wav_file_name + " "+ "111" + "\n")
+                tsv_file.write(fname.replace("8k", "16k") + ".wav" + "\t"+ str(frames) + "\n")
                 ltr_file.write(new2 + "\n")
                 wrd_file.write(new_transcript + "\n")
 
