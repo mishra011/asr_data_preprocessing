@@ -6,14 +6,24 @@ import random
 import librosa
 
 #/dacx/CompressedAudioTransfer_upto_26jan
-base_dir = "CompressedAudioTransfer_upto_26jan"
-
 #current_dir = abspath(getcwd())
-current_dir = "/dacx"
-print(current_dir)
+
+SOURCE_FOLDER = "base_data"
+
+SOURCE_DIR = "/home/deepak/CompressedAudioTransfer_2021-01-26/asr_data_preprocessing_v2"
+DESTINATION_DIR = "/home/deepak/CompressedAudioTransfer_2021-01-26/asr_data_preprocessing_v2"
+DESTINATION_FOLDER = "Full_Data"
+
+print("SOURCE_DIR :: ", SOURCE_DIR)
+print("SOURCE_FOLDER :: ", SOURCE_FOLDER)
+print("DESTINATION_DIR :: ", DESTINATION_DIR)
+print("DESTINATION_FOLDER :: ", DESTINATION_FOLDER)
 
 
-sub_dir_list = listdir(join(current_dir, base_dir))
+parts = ["train", "valid", "test"]
+
+
+sub_dir_list = listdir(join(SOURCE_DIR, SOURCE_FOLDER))
 
 print(sub_dir_list)
 print()
@@ -57,13 +67,13 @@ def splitter(data):
             all_trans.append(trans)
             new_data.append(item)
     l = len(new_data)
-    print("TOTAL DATA :: ", l)
+    print("TOTAL UNIQUE DATA :: ", l)
     #new_data = random.sample(new_data, len(new_data))
     m = [int((l*80)/100), int((l*10)/100)]
     train = new_data[:m[0]]
     valid = new_data[m[0]:m[0]+m[1]]
     test = new_data[m[0]+m[1]:]
-    print(len(train), len(valid), len(test), l)
+    print("TRAIN DATA :: {0}, VALID DATA :: {1}, TEST DATA :: {2}".format(len(train), len(valid), len(test)))
 
     return (train, valid, test)
 
@@ -72,7 +82,7 @@ def splitter(data):
 #####################################
 transcript_file_list = []
 for dir in sub_dir_list:
-    working_dir = join(current_dir,base_dir, dir)
+    working_dir = join(SOURCE_DIR, SOURCE_FOLDER, dir)
     #print(working_dir)
 
     _meta = [join(working_dir, f) for f in listdir(working_dir) if isfile(join(working_dir, f)) and f.endswith('.txt')]
@@ -80,7 +90,7 @@ for dir in sub_dir_list:
     #print(transcript_file_list)
 
 
-print(len(transcript_file_list))
+print("TOTAL TRANSCRIPT FILE FOUND :: ",len(transcript_file_list))
 # print(transcript_file_list[:5])
 
 
@@ -90,20 +100,18 @@ language_based_data = split_on_language(transcript_file_list=transcript_file_lis
 languages = list(language_based_data.keys())
 print(languages)
 
-DIR = "Full_Data_v4"
-parts = ["train", "valid", "test"]
 
 
 
 for lang in languages:
-    print("LANGUAGE :: ", lang)
+    print("PROCESSING LANGUAGE :: ", lang)
     lang_data = language_based_data[lang]
     data = splitter(lang_data)
     #quit()
 
     for i, _data in enumerate(data):
         label = parts[i]
-        destination_dir = join(current_dir, DIR, lang, label)
+        destination_dir = join(DESTINATION_DIR, DESTINATION_FOLDER, lang, label)
         date_counter = {}
         if not os.path.exists(destination_dir):
             os.makedirs(destination_dir)
@@ -125,11 +133,14 @@ for lang in languages:
             else:
                 date_counter[cc] += 1
 
-            name = label + "__"+ lang + "__" + str(duration) + "__" + str(date_counter[cc]).zfill(6) + "__8k" 
+            name = label + "__"+ lang + "__" + str(date_counter[cc]).zfill(6) + "__" + str(duration) + "__8k" 
 
             os.system("cp {0} {1}".format(filepath, join(destination_dir, name+".txt")))
             os.system("cp {0} {1}".format(filepath, join(destination_dir, name+".gl")))
             os.system("cp {0} {1}".format(filepath.replace(".txt", ".wav"), join(destination_dir, name+".wav")))
+    
+    print("LANGUAGE COMPLETED :: " , lang)
+    print("-------------------------------")
         
 
 
