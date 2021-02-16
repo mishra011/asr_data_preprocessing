@@ -98,7 +98,9 @@ def filter_data(transcript, lang="en-in"):
 
 transcript_file_list = []
 for lang in sub_dir_list:
+    
     for label in labels:
+        print("LANGUAGE STARTED :: ", lang, label)
         working_dir = join(SOURCE_DIR,SOURCE_FOLDER, lang, label)
         print(working_dir)
 
@@ -147,10 +149,11 @@ for lang in sub_dir_list:
         ltr_file.close()
         wrd_file.close()
         meta_file.close()
+        print("------DONE ------")
 
 
-# print(len(transcript_file_list))
-# print(transcript_file_list[:5])
+
+
 
 
 
