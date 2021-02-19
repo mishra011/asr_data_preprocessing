@@ -8,10 +8,10 @@ import librosa
 #/dacx/CompressedAudioTransfer_upto_26jan
 #current_dir = abspath(getcwd())
 
-SOURCE_FOLDER = "base_data"
+SOURCE_FOLDER = "CompressedAudioTransfer"
 
-SOURCE_DIR = "/home/deepak/CompressedAudioTransfer_2021-01-26/asr_data_preprocessing_v2"
-DESTINATION_DIR = "/home/deepak/CompressedAudioTransfer_2021-01-26/asr_data_preprocessing_v2"
+SOURCE_DIR = "/home/deepak/Comp"
+DESTINATION_DIR = "/home/deepak/Comp"
 DESTINATION_FOLDER = "Full_Data"
 
 print("SOURCE_DIR :: ", SOURCE_DIR)
@@ -142,7 +142,6 @@ for lang in languages:
     print("LANGUAGE COMPLETED :: " , lang)
     print("-------------------------------")
         
-
 
 
 

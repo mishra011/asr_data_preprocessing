@@ -15,8 +15,8 @@ alphabets = list(string.ascii_lowercase)
 
 SOURCE_FOLDER = "Full_Data"
 
-SOURCE_DIR = "/home/deepak/CompressedAudioTransfer_2021-01-26/asr_data_preprocessing_v2"
-DESTINATION_DIR = "/home/deepak/CompressedAudioTransfer_2021-01-26/asr_data_preprocessing_v2"
+SOURCE_DIR = "/home/deepak/Comp"
+DESTINATION_DIR = "/home/deepak/Comp"
 DESTINATION_FOLDER = "dataset"
 
 print("SOURCE_DIR :: ", SOURCE_DIR)
