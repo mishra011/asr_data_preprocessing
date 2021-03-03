@@ -31,9 +31,13 @@ print()
 ##########################################
 def read_transcript_to_dict(filename):
     #print(filename)
-    rr = open(filename, "r")
-    data = rr.read()
-    data = json.loads(data)
+    try:
+        rr = open(filename, "r")
+        data = rr.read()
+        data = json.loads(data)
+    except:
+        print("ERROR IN READING FILE :: ", filename)
+        data = {}
     return data
 
 ######################################
@@ -45,7 +49,7 @@ def split_on_language(transcript_file_list=[], language_based_data={}):
     for f in transcript_file_list:
         data = read_transcript_to_dict(filename=f)
         #print(data)
-        lang = data['languageCode'] 
+        lang = data['languageCode'] if data and data['languageCode'] else "ERROR"
         if lang not in language_based_data:
             language_based_data[lang] = [f]
         else:

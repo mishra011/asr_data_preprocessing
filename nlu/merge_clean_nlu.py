@@ -70,7 +70,7 @@ def remove_text_inside_brackets(text, brackets="(){}"):
 def word_cleaner(txt):
     words = [("dont", "don't"),("thats", "that's"),("its", "it's"),("thankyou", "thank you"),
     ("donot", "do not"),("isnt", "isn't"), ("emis", "emi's"), ("atms", "atm's"),
-    ("lets", "let's"), ("cannot","can not"),("whats","what's"),
+    ("lets", "let's"), ("cannot","can not"),("whats","what's"),("i ll", "i will"), ("i'll","i will"),
     ("‘", ""), ("’",""), ("“", ""), ("”",""), ("' ", "")]
 
     for item in words:
@@ -83,7 +83,7 @@ def preprocess_transcript(transcript, lang="en-in", punt=punt):
     # convert number to text in string
     transcript = replaceInt(transcript)
     # remove roman numeral from string
-    transcript = re.sub(r'(?=\b[MCDXLVI]{1,6}\b)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})', '', transcript.upper()).lower()
+    #transcript = re.sub(r'(?=\b[MCDXLVI]{1,6}\b)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})', '', transcript.upper()).lower()
     # remove punctuations except "'"
     regex = re.compile('[%s]' % re.escape(punt))
     transcript = regex.sub(' ', transcript)
